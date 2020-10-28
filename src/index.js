@@ -4,18 +4,43 @@ import './index.css';
 
 
 class Square extends React.Component {
+
     render() {
         return (
-            <button className="square">
-                {/* TODO */}
+            <button className="square"
+                    onClick={ ()=> this.props.onClick() }
+            >
+                {this.props.value}
             </button>
         );
     }
 }
 
 class Board extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+          squares: new Array(9).fill(null)
+        };
+
+        // bind event handlers to this object when passed to children.
+        // this.handleClick = this.handleClick.bind(this);
+    }
     renderSquare(i) {
-        return <Square />;
+        return (
+            <Square
+                value={ this.state.squares[i] }
+                onClick={ () => this.handleClick(i) }
+            />);
+    }
+
+    handleClick(i){
+        const squares = this.state.squares.slice(); // new array
+        squares[i] = 'X';  // modify the copied array
+
+        // set state and re-render the Board and all its children (Squares)
+        this.setState({ squares: squares} );
     }
 
     render() {
